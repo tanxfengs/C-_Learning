@@ -1,4 +1,8 @@
-# C#
+# C# 
+
+## By lavoz_sz@qq. com
+
+
 
 ## C#基础
 
@@ -340,9 +344,9 @@ namespace Program2{
 double salary = balence[9];
 ```
 
-### 数组细节
+#### 数组细节
 
-#### 多维数组
+##### 多维数组
 
 ```C#
 string[,] names;
@@ -399,7 +403,113 @@ string[,] names;
 
   
 
+#### 交错数组
 
++ 即数组的数组
+
+```c#
+int [][] scores;
+```
+
++ 声明一个数组不会在内存中创建数组.
+
+```C#
+int[][] scores = new int[5][];
+for (int i = 0; i< scores.Length; i++){
+	scores[i] = new int[4];
+}
+
+// 
+```
+
+```C#
+using System;
+namespace ConsoleApp2
+{
+    public class MyArray
+    {
+        public void Show(){
+            int[][] a = new int[][]{
+                new int[]{0, 0}, new int[]{1, 2},
+                new int[]{2, 4}, new int[]{3, 6},
+                 new int[]{4, 8}
+            };
+            
+            int i, j;
+            //输出
+            for (i = 0; i< 5; i++){
+                for (j = 0; j< 2; j++){
+                    Console.WriteLine($"第{i}行-{j}列, {a[i][j]}");
+                }
+            }
+
+        }
+    }
+}
+```
+
+#### 传递数组给函数
+
+```C#
+namespace ConsoleApp2
+{
+    public class ArrayParam
+    {
+        public static double GetAverage(int[] arr, int size){
+            double avg;
+            int sum = 0;
+            for (int i = 0; i < size; i++)
+            {
+                sum += arr[i];
+            }
+            avg = (double)sum / size;
+            return avg;
+        }
+    }
+}
+```
+
+#### 参数数组
+
+##### params 关键字
+
++ 在使用数组作为形参时, C#提供了params关键字, 使调用数组为形参的方法时, 即可以传递数组实参, 也可以传递一组数组元素, 使用格式为
+
+  ```C#
+  public 返回类型 方法名(params 类型名称[] 数组名称)
+  ```
+
+  ```C#
+  namespace ConsoleApp2
+  {
+      public class ArrayApplication2
+      {
+          public int AddElements(params int[] arr){
+              int sum = 0;
+              foreach (int i in arr){
+                  sum += i;
+              }
+              return sum;
+          }
+      }
+      
+      static void Main(string args[]){
+          new ArrayApplications().AddElements()
+      }
+  }
+  ```
+
+#### Array类
+
+| 方法        | 属性&描述                                        |
+| ----------- | ------------------------------------------------ |
+| IsFixedSize | 获取一个值, 该值只是数组是否带有固定大小         |
+| IsReadOnly  | 指示数组是否只读                                 |
+| Length      | 获取一个32位整数. 表示所有维度的数组中的元素总数 |
+| LongLength  | 获取一个64位整数, 同上                           |
+| Rank        | 获取数组的维度                                   |
+
++ 详细查看文档
 
 
 
@@ -414,24 +524,29 @@ string[,] names;
 + 通过格式化方法来转换一个值或对象为他的字符串表示形式
 
 ```C#
-using System
-namespace StringApp{
-    class Program{
-        static void Main(string[] args){
+using System;
+namespace ConsoleApp2.StringClass
+{ class StringApp{
+        public void Show(){
             //字符串, 字符串连接
             string fname, lname;
             fname = "Rowan";
             lname = "Atkson";
             string fullname = fname + lname;
-            Console.WriteLine("Full Name: {0}", fullname)
+            Console.WriteLine("Full Name: {0}", fullname);
             //构造函数
             char[] letters = {'H', 'e', 'l', 'l', 'o'};
             string greetings = new String(letters);
-            Console.WriteLine("Greetings: {0}", greetings)
+            Console.WriteLine("Greetings: {0}", greetings);
                 
             // 方法返回字符串
-                string[] sarray = {"Hello", "From", "Tutorials", "Point"}
-                
+            string[] sarray = {"Hello", "From", "Tutorials", "Point"};
+            string message = String.Join(" ", sarray);
+            Console.WriteLine($"Message {message}");  
+            //用于转换值得格式化方法
+            DateTime waiting = new DateTime(2020, 9, 25, 13, 33, 24);
+            string chat = String.Format("Message sent at {0:t} on {0:D}", waiting);
+            Console.WriteLine("Message: {0}", chat);
         }
     }
 }
@@ -439,21 +554,282 @@ namespace StringApp{
 
 ####  String 类的方法
 
-| 方法                              | 描述                                                         |
-| --------------------------------- | ------------------------------------------------------------ |
-| Compare(string str1, string str2) | 比较两个指定的string对象, 并返回一个表示它们在排列顺序中的相对位置的整数 |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
-|                                   |                                                              |
+| 方法                                                 | 描述                                                         |
+| ---------------------------------------------------- | ------------------------------------------------------------ |
+| Compare(string str1, string str2)                    | 比较两个指定的string对象, 并返回一个表示它们在排列顺序中的相对位置的整数 |
+| Compare( string strA, string strB, bool ignoreCase ) | 比较两个指定的 string 对象，并返回一个表示它们在排列顺序中相对位置的整数。但是，如果布尔参数为真时，该方法不区分大小写。 |
+| Concat(string str0, string str1)                     | 连接两个string对象                                           |
+| ..str3                                               | 连接三个string对象                                           |
+| ...str3, ...str4                                     | 连接四个string对象                                           |
+| Contains(string val)                                 | 指定字符串是否出现在字符串中                                 |
+| Copy(string str)                                     | 创建一个与指定字符串具有相同值得新的String对象               |
+| CopyTo                                               |                                                              |
+| EndsWith                                             | 结尾是否以指定字符匹配                                       |
+| Equals                                               |                                                              |
+| Equals(a, b)                                         |                                                              |
+| Format(str, obj)                                     |                                                              |
+| IndexOf(char val)                                    | 指定字符索引                                                 |
+
++ 更多查看文档
+
+
+
+### 结构体
+
++ 必须使用struct语句
+
+  ```C#
+  struct Books{
+      public string title;
+      public string author;
+      public string subject;
+  }
+  ```
+
+  #### 和类的区别
+
+  + 结构体无法直接赋值
+  + 需要复用/ 继承选用类
+
+  ```C#
+  using System;
+  namespace ConsoleApp2.Structure
+  {
+  
+      struct Book{
+          public string title;
+          public string author;
+          public string subject;
+          public int book_id;
+      }
+      public class TestStructure
+      {
+          public static void Show(){
+              Book Book1;
+              Book Book2;
+  
+              //Book1 详细描述
+              Book1.title = "C Programming";
+              Book1.author = "Nuha Ali";
+              Book1.subject = "C Programming";
+              Book1.book_id = 6498407;
+  
+              //Book2 详细描述
+              Book2.title = "Telecom";
+              Book2.author = "Zara";
+              Book2.subject = "Telecom Billing";
+  
+              //打印Book1信息
+              Console.WriteLine($"Book1 title: {Book1.title}");
+              Console.WriteLine($"Book1 author: {Book1.author}");
+              Console.WriteLine($"Book1 subject: {Book1.subject}");
+              Console.WriteLine($"Book1 book_id: {Book1.book_id}");
+  
+          }
+      }
+  }
+  ```
+
+### 枚举(Enum)
+
++ 语法
+
+  ```C#
+  enum <enum_name>{
+  	enumeration list
+  }
+  ```
+
+  ```C#
+  using System;
+  namespace ConsoleApp2
+  {
+      public class TestEnum
+      {
+          enum Day //默认情况 第一个枚举值为0
+          {
+              //0, 1, 2, 3, 4...
+              Sun, Mon, Tue, Web, Thu, Fri, Sat
+          }
+  
+          public static void Show(){
+              int x = (int)Day.Sun;
+              int y = (int)Day.Fri;
+              Console.WriteLine("Sun = {0}", x);
+              Console.WriteLine("Fri = {0}", y);
+          }
+  
+      }
+  }
+  ```
+
+### class(类) 
+
++ 类似Java, 但没有this
+
+#### 构造函数
+
++ 同Java (同名函数为构造函数)
+
+#### 析构函数
+
++ 析构函数用于在结束程序（比如关闭文件、释放内存等）之前释放资源。析构函数不能继承或重载。
+
+```C#
+using System;
+/*
+析构函数
+*/
+namespace ConsoleApp2
+{
+    public class Line
+    {
+        private double length;
+        public Line(){
+            Console.WriteLine("对象已经创建");
+        }
+
+        ~Line(){
+            Console.WriteLine("对象已经删除");
+        }
+
+        public void setLength(double len){
+            length = len;
+        }
+
+        public double getLength(){
+            return length;
+        }
+
+        public void Show(){
+            setLength(6.0);
+
+            Console.WriteLine("线条的长度: {0}", getLength());
+        }
+    }
+}
+```
+
+### 继承
+
+```C#
+namespace ConsoleApp2
+{
+    public class Shape
+    {
+        protected int width;
+        protected int height;
+        public void setWidth(int w){
+            width = w;
+        }
+
+        public void setHeight(int h){
+            height = h;
+        }
+    }
+
+
+    class Rectangle: Shape{
+        public int getArea(){
+            return (width * height);
+        }
+    }
+}
+```
+
+
+
+#### 多态性
+
+##### 静态多态性
+
+##### 函数重载
+
++ 方法重载
+
+##### 动态多态性
+
+##### 运算符重载
+
+```C#
+using System;
+namespace ConsoleApp2
+{
+     class Box
+    {
+        private double length;
+        private double breadth;
+        private double height;
+
+        public double getVolume(){
+            return length * breadth * height;
+        }
+
+        public void setLength(double len){
+            length = len;
+        }
+        public void setBreadth(double bre){
+            breadth = bre;
+        }
+
+        public void setHeight(double hei){
+            height = hei;
+        }
+
+        public static Box operator+ (Box b, Box c){
+            Box box = new Box();
+            box.length = b.length + c.length;
+            return box;
+
+        }
+    }
+}
+```
+
+```C#
+stativ void Main(string[] args){
+    Box box1 = new Box();
+            Box box2 = new Box();
+            //Box box3 = new Box();
+            double volume;
+
+            box1.setLength(6.0);
+            box1.setBreadth(7.0);
+            box1.setHeight(5.0);
+
+            //box2 
+            box2.setLength(16.0);
+            box2.setBreadth(17.0);
+            box2.setHeight(15.0);
+            // box1的体积
+            volume = box1.getVolume();
+            Console.WriteLine($"box1 的体积是: {volume}");
+            
+            //Box2 的体积
+            volume = box2.getVolume();
+            Console.WriteLine($"box2 的体积是: {volume}");
+
+            //Box3
+            Box box3 = box1 + box2;
+            volume = box3.getVolume();
+            Console.WriteLine($"box3 的体积是: {volume}");
+}
+```
+
++ 重载操作符, 可以直接把类用操作符(+-*/等)操作
+
+  | 运算符                                | 描述                                         |
+  | ------------------------------------- | -------------------------------------------- |
+  | +, -, !, ~, ++, --                    | 这些一元运算符只有一个操作数，且可以被重载。 |
+  | +, -, *, /, %                         | 这些二元运算符带有两个操作数，且可以被重载。 |
+  | ==, !=, <, >, <=, >=                  | 这些比较运算符可以被重载                     |
+  | &&, \|\|                              | 这些赋值运算符不能被重载                     |
+  | +=, -=, *=, /=, %=                    | 不能被重载                                   |
+  | =, ., ?:, ->, new, is, sizeof, typeof | 不能被重载                                   |
+
+
+
+### 接口
 
 
 
